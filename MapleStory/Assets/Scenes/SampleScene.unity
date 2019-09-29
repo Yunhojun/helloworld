@@ -150,29 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cycle: 0
-  monster: {fileID: 1667744347}
-  count: 0
-  arr:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  monster: {fileID: 8404159727311163671, guid: bfee4caebb615fc40a98e2a8fcc689c2, type: 3}
 --- !u!4 &87730880
 Transform:
   m_ObjectHideFlags: 0
@@ -259,8 +237,7 @@ PrefabInstance:
       propertyPath: Velocity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfee4caebb615fc40a98e2a8fcc689c2, type: 3}
 --- !u!1 &485111568
 GameObject:
@@ -295,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   Hp: 10
-  monster: {fileID: 1667744347}
+  monster: {fileID: 8404159727311163671, guid: bfee4caebb615fc40a98e2a8fcc689c2, type: 3}
 --- !u!212 &485111570
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -551,9 +528,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1667744347 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8404159727311163671, guid: bfee4caebb615fc40a98e2a8fcc689c2,
-    type: 3}
-  m_PrefabInstance: {fileID: 425541783}
-  m_PrefabAsset: {fileID: 0}

@@ -23,21 +23,9 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         AnimatedAttack();
-        attack();
+        
 
         AnimatedDead();
-    }
-
-    public void attack()
-    {
-        if (Input.GetKey("space"))
-        {
-            if (monster.transform.position.x <= -11)
-            {
-                print("attack");
-                monster.GetComponent<MonsterScript>().Hp = 0;
-            }
-        }
     }
 
     public void AnimatedAttack()

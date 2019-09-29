@@ -6,21 +6,14 @@ public class Status : MonoBehaviour
 {
     [SerializeField]
     private float cycle = 0;
-    private int InstancePattern = 1;
     [SerializeField]
     private GameObject monster;
-    [SerializeField]
-    private int count = 0;
-
-    public GameObject[] arr = new GameObject[20];
+    private int pattern = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < 20; i++)
-        {
-            arr[i] = Instantiate<GameObject>(monster);
-        }
+        pattern = Random.Range(0, 3);
     }
 
     // Update is called once per frame
@@ -32,20 +25,41 @@ public class Status : MonoBehaviour
 
     public void RandomCycle()
     {
-        if (cycle >= 2.0f)
+
+        if (pattern == 0)
         {
-            MoveMonster();
-            cycle = 0;
+            if(cycle >= 1f){
+                cycle = 0;
+                CreateMonster();
+                print(pattern);
+            }
         }
+        
+        else if (pattern == 1)
+        {
+            if (cycle >= 1.5f)
+            {
+                cycle = 0;
+                CreateMonster();
+                print(pattern);
+            }
+        }
+
+        else if (pattern == 2)
+        {
+            if(cycle >= 4f)
+            {
+                cycle = 0;
+                CreateMonster();
+                print(pattern);
+            }
+        }
+        
     }
 
-    public void MoveMonster()
+    public void CreateMonster()
     {
-        if(count >= 20)
-        {
-            count = 0;
-        }
-        arr[count].GetComponent<MonsterScript>().Velocity = 1;
-        count++;
+        Instantiate<GameObject>(monster);
+        pattern = Random.Range(0, 3);
     }
 }
