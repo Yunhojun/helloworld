@@ -23,14 +23,12 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
         AnimatedAttack();
-        
-
         AnimatedDead();
     }
 
     public void AnimatedAttack()
     {
-        animator.SetBool("attack", Input.GetKey("space"));
+        animator.SetBool("attack", Input.GetKeyDown("space"));
     }
 
     public void AnimatedDead()

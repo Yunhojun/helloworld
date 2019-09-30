@@ -10,20 +10,23 @@
         private bool run = false;
         [SerializeField]
         public float Hp = 1;
-        private float attackdelay = 0;
-        
+        public GameObject player;
 
         // Start is called before the first frame update
         void Start()
         {
             animator = GetComponent<Animator>();
             Velocity = Random.Range(1, 3) * 2;
+        
+            AniamtedDead();
+            AnimatedMove();
+            
+            
         }
 
         // Update is called once per frame
         void Update()
-        {
-            attackdelay += Time.deltaTime;  
+        { 
             move();
             if (Hp <= 0)
             {
@@ -31,7 +34,7 @@
             }
             
             attack();
-        }
+    }
 
         public void move()
         {
@@ -45,6 +48,12 @@
             {
                 run = false;
             }
+            AnimatedMove();
+        }
+
+        public void AnimatedMove()
+        {
+
             animator.SetBool("Run", run);
         }
 
@@ -52,9 +61,15 @@
         {
             Velocity = 0;
             Destroy(gameObject,1f);
-            animator.SetFloat("Hp", Hp);
-
+            
+            AniamtedDead();
         }
+
+        public void AniamtedDead()
+    {
+
+        animator.SetFloat("Hp", Hp);
+    }
 
     public void OnBecameInvisible()
         {
@@ -63,16 +78,14 @@
 
 
         public void attack()
+            {
         {
             if (Input.GetKeyDown("space"))
-            {
-                if (transform.position.x <= -11 || transform.position.x>=-12)
+                if (transform.position.x - player.transform.position.x <= 2 )
                 {
                     print("attack");
                     GetComponent<MonsterScript>().Hp = 0;
-                }
-                   
-               
+                }               
             }
         }
     }
