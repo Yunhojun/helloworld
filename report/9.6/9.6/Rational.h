@@ -1,13 +1,17 @@
 #include <string>
+#include <iostream>
 
 class Rational {
+	friend std::ostream& operator<<(std::ostream&, Rational&);
+
 public:
 	explicit Rational(int, int);
 
-	void add(Rational);
-	void subtract(Rational);
-	void multiply(Rational);
-	void divide(Rational);
+	const Rational operator+ (Rational&);
+	const Rational operator-(Rational&);
+	const Rational operator*(Rational&);
+	const Rational operator/(Rational&);
+
 	std::string toRaionalString();
 	double toDouble();
 	void reduce();
