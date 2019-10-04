@@ -4,7 +4,7 @@ using namespace std;
 int main() {
 	HugeInteger A;
 	HugeInteger B;
-
+	
 	A.input();
 	B.input();
 

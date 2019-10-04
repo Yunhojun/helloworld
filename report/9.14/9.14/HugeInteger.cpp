@@ -88,13 +88,23 @@ void HugeInteger::subtract(HugeInteger A) {
 void HugeInteger::input() {
 	std::string A;
 	std::cout << "Please input 40 digits integer: ";
-	std::cin >> A;
-	if (A.length() != 40) {
-		std::cout << "You didn't input 40 digits." << std::endl;
-		return;
-	}
-	for (int i = 0; i < 40; i++) {
-		arr[i] = A[i];
+
+	while (true) {
+		try {
+			std::cin >> A;
+			if (A.length() != 40) {
+				throw ("You didn't input 40 digits");
+
+			}
+			for (int i = 0; i < 40; i++) {
+				arr[i] = A[i];
+			}
+		}
+		catch (const char*){
+			std::cout << "Please input 40 digits integer again: ";
+			continue;
+		}
+		break;
 	}
 }
 
