@@ -1,6 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <string>
 #include <iostream>
 #include <stdexcept>
+#include <ctime>
 
 #ifndef DATE_H
 #define DATE_H
@@ -8,6 +10,7 @@
 class Date
 {
 public:
+	Date();
 	Date(int, int);
 	Date(int, int, int);
 	Date(std::string, int, int);

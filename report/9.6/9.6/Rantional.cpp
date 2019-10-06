@@ -1,8 +1,15 @@
 #include "Rational.h"
 
 Rational::Rational(int num_value, int denom_value)
-: numerator(num_value),denominator(denom_value)
+: numerator(num_value)
 {
+	if (denom_value == 0) {
+		std::cout << "You can't input 0 to denominater. The denominator is 1 now." << std::endl;
+		denominator = 1;
+	}
+	else {
+		denominator = denom_value;
+	}
 	reduce();
 };
 

@@ -68,7 +68,7 @@ void Q_Equations::solve() {
 		cout << (-b) / 2 * a << endl;
 	}
 	else {
-		cout << (-b + sqrt(D)) / 2 * a << (-b - sqrt(D)) / 2 * a << endl;
+		cout << (-b + sqrt(D)) / 2 * a << " , " << (-b - sqrt(D)) / 2 * a << endl;
 	}
 }//display value x
 

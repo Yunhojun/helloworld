@@ -1,5 +1,14 @@
 #include "Date.h"
 
+Date::Date() {
+	std::time_t t = std::time(0);   // get time now
+	std::tm* now = std::localtime(&t);
+	Year = now->tm_year + 1900;
+	Month = now->tm_mon + 1;
+	Day = now->tm_mday;
+	DaytoDDD();
+}
+
 Date::Date(int day_, int year_)
 	:DDD(day_), Year(year_)
 {

@@ -12,7 +12,7 @@ DeckOfCards::DeckOfCards() {
 }
 
 void DeckOfCards::shuffle() {
-	srand(time(0));
+	srand((unsigned int)time(0));
 	for (int i = 0; i < 100; i++) {
 		int first = rand() % 52;
 		int second = rand() % 52;

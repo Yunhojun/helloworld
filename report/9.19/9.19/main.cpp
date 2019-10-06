@@ -10,5 +10,8 @@ int main() {
 	cout << B.toString() << endl << endl;
 
 	Date C("Aprill", 10, 2000);
-	cout << C.toString() << endl;
+	cout << C.toString() << endl << endl;
+
+	Date current_Date;
+	cout << current_Date.toString() << endl;
 }
