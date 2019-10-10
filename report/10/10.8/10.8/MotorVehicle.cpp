@@ -15,7 +15,7 @@ bool MotorVehicle::operator==(MotorVehicle& A) {
 	if (getmake() != A.getmake()) {
 		return false;
 	}
-	if (getfuelType() != A.getfuelType) {
+	if (getfuelType() != A.getfuelType()) {
 		return false;
 	}
 	if (getyearOfManufacture() != A.getyearOfManufacture()) {
@@ -31,7 +31,7 @@ bool MotorVehicle::operator==(MotorVehicle& A) {
 }
 
 bool MotorVehicle::operator!=(MotorVehicle& A) {
-	if (operator== == false) {
+	if ((*this == A) == false) {
 		return true;
 	}
 	else return false;
@@ -50,9 +50,9 @@ bool MotorVehicle::operator>(MotorVehicle& A) {
 std::string MotorVehicle::displayCarDetails() {
 	std::string output_make = "\nmake: " + getmake();
 	std::string output_fuel = "\nfuelType: " + getfuelType();
-	std::string output_year = "\nyearOfManufactur: " + getyearOfManufacture();
+	std::string output_year = "\nyear of manufacture: " + std::to_string(getyearOfManufacture());
 	std::string output_color = "\ncolor: " + getcolor();
-	std::string output_capacity = "\nengineCapacity: " + getengineCapacity();
+	std::string output_capacity = "\nengineCapacity: " + std::to_string(getengineCapacity());
 
 	return output_make + output_fuel + output_year + output_color + output_capacity;
 }
