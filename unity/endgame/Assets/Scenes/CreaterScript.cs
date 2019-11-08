@@ -11,8 +11,8 @@ public class CreaterScript : MonoBehaviour
     private float rate = 30;
     public GameObject obj;
     GameObject Changer;
-    public int score = 0;
     public bool dirChange;
+    public int score;
 
     // Start is called before the first frame update
     void Start()
@@ -39,12 +39,12 @@ public class CreaterScript : MonoBehaviour
         float instanceRate = rate / 100;
         if(randfloat <= instanceRate)
         {
-            Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
+            Instantiate(obj, new Vector3(-4.5f, 0, 0), Quaternion.identity);
             obj.GetComponent<objScript>().goodObj = false;
         }
         else
         {
-            Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
+            Instantiate(obj, new Vector3(-4.5f, 0, 0), Quaternion.identity);
             obj.GetComponent<objScript>().goodObj = true;
         }
         time = 0;

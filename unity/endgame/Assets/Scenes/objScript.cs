@@ -63,7 +63,6 @@ public class objScript : MonoBehaviour
     {
         if (collision.gameObject == Changer)
         {
-            print("Collide with Changer");
             float rotationSpeed = 4f;
             direction = Vector3.Lerp(direction, newdir, rotationSpeed * Time.deltaTime);
         }
