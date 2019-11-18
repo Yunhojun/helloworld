@@ -17,10 +17,13 @@ int main() {
 			int temp = str[0] - str[1];
 			for (int j = 1; j < len - 1; j++) {
 				if (temp != str[j] - str[j + 1]) {
+					res--;
 					break;
 				}
-				
 			}
+			res++;
 		}
 	}
+
+	cout << res << endl;
 }
