@@ -6,6 +6,10 @@ TagManager:
   tags:
   - Plane
   - SubCamera
+<<<<<<< HEAD
+=======
+  - Ceil
+>>>>>>> bf2650220ea0323615cdd027fb28ec567c9ec748
   layers:
   - Default
   - TransparentFX
