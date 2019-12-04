@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjScript : MonoBehaviour
 {
-    public int HP = 100;//최대 체력
+    int HP = 100;//최대 체력
     float HpRegen = 0;//1초당 체력재생
     float AtkSpeed = 1;//초당 공격횟수
     float AtkDamage = 10;//공격력
@@ -17,37 +17,44 @@ public class ObjScript : MonoBehaviour
     int SpellMultiplication = 100;//주문 배율
     float MoveSpeed = 1f;
     Vector2 pos;
-    GameObject Manager;
+    GameObject Manager = null;
     
     float time = 0;
     float TimeForAtk = 0;
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         Manager = GameObject.FindGameObjectWithTag("GameController");
     }
 
+    void Start()
+    {
+
+    }
+
     // Update is called once per frame
+
+    private void FixedUpdate()
+    {
+
+    }
+
     void Update()
     {
         Vector2 target = findEnemy();
         move(target);
         time += Time.deltaTime;
         TimeForAtk += Time.deltaTime;
-        if(TimeForAtk * AtkSpeed >= 1f)
+        if (TimeForAtk * AtkSpeed >= 1f)
         {
-            Attack(target);
+            //Attack(target);
         }
         if (time >= 1f)
         {
             GainMana();
             GainHp();
             time = 0;
-        }
-        if(Mana >= 100)
-        {
-
         }
     }    
 
@@ -56,7 +63,7 @@ public class ObjScript : MonoBehaviour
         float dis = 100f;
         Vector2 targetPos = pos;
         bool isAtk = isAtkFunc(targetPos);
-        Vector2[] enemy = Manager.GetComponent<CreateBoard>().enemy;
+        Vector2[] enemy = Manager.GetComponent<CreateBoard>().getEnemy();
         for(int i=0; i<10; i++)
         {
             float newdis = Vector2.Distance(enemy[i], pos);
@@ -77,10 +84,10 @@ public class ObjScript : MonoBehaviour
         {
             for(int y=-AtkRange; y<=AtkRange; y++)
             {
-                BoardScript targetBoard = Manager.GetComponent<CreateBoard>().boards[Mathf.RoundToInt(enemy.x) - x, Mathf.RoundToInt(enemy.y) - y].GetComponent<BoardScript>();
-                if(!targetBoard.isOnEnemy)
+                BoardScript targetBoard = Manager.GetComponent<CreateBoard>().getBoards(enemy.x - x, enemy.y -y).GetComponent<BoardScript>();
+                if(!targetBoard.getisOnEnemy())
                 {
-                    Vector2 newpos = new Vector2(targetBoard.x, targetBoard.y);
+                    Vector2 newpos = targetBoard.getpos();
                     float newdis = Vector2.Distance(newpos, pos);
                     if (newdis <= tempdis)
                     {
@@ -91,30 +98,27 @@ public class ObjScript : MonoBehaviour
             }
         }
         Vector3 dir = new Vector3(temp.x, transform.position.y, temp.y) - transform.position;
-        transform.Translate(dir.normalized * MoveSpeed * Time.deltaTime);
+        transform.Translate(dir.normalized * MoveSpeed * Time.deltaTime, Space.Self);
+        print(dir.normalized * MoveSpeed * Time.deltaTime);
+    }
+
+    void Damaged(float damage)
+    {
+        print("ATTACK");
     }
 
     void Attack(Vector2 target)
     {
-        GameObject targetObject = Manager.GetComponent<CreateBoard>().boards[Mathf.RoundToInt(target.x), Mathf.RoundToInt(target.y)];
-        if(isOnCenter()&& Mathf.RoundToInt(Vector2.Distance(pos,target)) <= AtkRange)
+        GameObject targetObject = Manager.GetComponent<CreateBoard>().getBoards(target.x, target.y);
+        if (isOnCenter()&& Vector2.Distance(pos,target) <= (float)AtkRange && targetObject.GetComponent<BoardScript>().getisOnEnemy())
         {
-            if (targetObject.GetComponent<BoardScript>().isOnEnemy)
+            int damage = Mathf.RoundToInt(AtkDamage);
+            if (targetObject.GetComponent<BoardScript>().getUnit().tag == "Enemy")
             {
-                if (targetObject.GetComponent<BoardScript>().Unit.tag == "Enemy")
-                {
-                    //targetObject.GetComponent<BoardScript>().Unit.GetComponents<ObjScript>().
-                }
-                TimeForAtk = 0;
+                targetObject.GetComponent<BoardScript>().getUnit().GetComponent<ObjScript>().Damaged(damage);
+                print("III");
             }
-            else
-            {
-                return;
-            }
-        }
-        else
-        {
-            return;
+            TimeForAtk = 0f;
         }
     }
 
@@ -159,8 +163,7 @@ public class ObjScript : MonoBehaviour
     {
         if(other.tag == "Plane")
         {
-            pos.x = other.GetComponent<BoardScript>().x;
-            pos.y = other.GetComponent<BoardScript>().y;
+            pos = other.GetComponent<BoardScript>().getpos();
         }
     }
 }

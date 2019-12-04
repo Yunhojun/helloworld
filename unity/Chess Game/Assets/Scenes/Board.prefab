@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5990533552577039409}
   - component: {fileID: -3271103038434860138}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Board
   m_TagString: Plane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,3 +104,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1c5fb566fe2f3442a5a3f27dfc0a001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOnEnemy: 0
+  isOnFriendly: 0
