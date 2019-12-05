@@ -49,12 +49,14 @@ public class BoardScript : MonoBehaviour
         {
             isOnFriendly = true;
             Unit = other.gameObject;
+            ObjNum = other.GetComponent<ObjScript>().ObjNum;
             Manager.GetComponent<CreateBoard>().setFriendly(ObjNum, new Vector2(x, y));
         }
         if(other.tag == "Enemy")
         {
             isOnEnemy = true;
-            Unit = other.gameObject;            
+            Unit = other.gameObject;
+            ObjNum = other.GetComponent<ObjScript>().ObjNum;
             Manager.GetComponent<CreateBoard>().setEnemy(ObjNum, new Vector2(x, y));
         }
     }

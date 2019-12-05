@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjScript : MonoBehaviour
+public abstract class ObjScript : MonoBehaviour
 {
-    int HP = 100;//최대 체력
-    float HpRegen = 0;//1초당 체력재생
-    float AtkSpeed = 1;//초당 공격횟수
-    float AtkDamage = 10;//공격력
-    int AtkRange = 1;//사거리
-    int CriticalRate = 5;//치명타확률
-    int CriticalMultiplication = 200;//치명타 배율
-    int Mana = 0;//기본마나
-    float ManaRegen = 5;//초당 마나재생
-    int Defense = 0;//방어력
-    int SpellMultiplication = 100;//주문 배율
-    float MoveSpeed = 1f;
-    Vector2 pos;
-    GameObject Manager = null;
-    
+    protected int HP = 100;//최대 체력
+    protected float HpRegen = 0;//1초당 체력재생
+    protected float AtkSpeed = 1;//초당 공격횟수
+    protected float AtkDamage = 10;//공격력
+    protected int AtkRange = 1;//사거리
+    protected int CriticalRate = 5;//치명타확률
+    protected int CriticalMultiplication = 200;//치명타 배율
+    protected int Mana = 0;//기본마나
+    protected float ManaRegen = 5;//초당 마나재생
+    protected int Defense = 0;//방어력
+    protected int SpellMultiplication = 100;//주문 배율
+    protected float MoveSpeed = 1f;
+    [SerializeField]
+    protected Vector2 pos;
+    protected GameObject Manager = null;
+    protected bool isMove = true;
     float time = 0;
     float TimeForAtk = 0;
+    public int ObjNum;
 
     // Start is called before the first frame update
     private void Awake()
@@ -35,20 +37,18 @@ public class ObjScript : MonoBehaviour
 
     // Update is called once per frame
 
-    private void FixedUpdate()
-    {
-
-    }
-
-    void Update()
+    protected void FixedUpdate()
     {
         Vector2 target = findEnemy();
-        move(target);
-        time += Time.deltaTime;
-        TimeForAtk += Time.deltaTime;
+        if (isMove)
+        {
+            move(target);
+        }
+        time += Time.fixedDeltaTime;
+        TimeForAtk += Time.fixedDeltaTime;
         if (TimeForAtk * AtkSpeed >= 1f)
         {
-            //Attack(target);
+            Attack(target);
         }
         if (time >= 1f)
         {
@@ -56,14 +56,23 @@ public class ObjScript : MonoBehaviour
             GainHp();
             time = 0;
         }
-    }    
+        if(Mana >= 100)
+        {
+            
+        }
+    }
 
-    Vector2 findEnemy()//가장 가까이 있는 적을 찾아 그 좌표를 리턴(target)
+    void Update()
+    {
+
+    }
+
+    protected Vector2 findEnemy()//가장 가까이 있는 적을 찾아 그 좌표를 리턴(target)
     {
         float dis = 100f;
         Vector2 targetPos = pos;
         bool isAtk = isAtkFunc(targetPos);
-        Vector2[] enemy = Manager.GetComponent<CreateBoard>().getEnemy();
+        Vector2[] enemy = GetEnemy();
         for(int i=0; i<10; i++)
         {
             float newdis = Vector2.Distance(enemy[i], pos);
@@ -76,7 +85,7 @@ public class ObjScript : MonoBehaviour
         return targetPos;
     }
 
-    void move(Vector2 enemy)//target에 가장 가까운 칸으로 이동
+    protected void move(Vector2 target)//target에 가장 가까운 칸으로 이동
     {
         Vector2 temp = Vector2.zero;
         float tempdis = 100f;
@@ -84,12 +93,12 @@ public class ObjScript : MonoBehaviour
         {
             for(int y=-AtkRange; y<=AtkRange; y++)
             {
-                BoardScript targetBoard = Manager.GetComponent<CreateBoard>().getBoards(enemy.x - x, enemy.y -y).GetComponent<BoardScript>();
+                BoardScript targetBoard = Manager.GetComponent<CreateBoard>().getBoards(target.x - x, target.y -y).GetComponent<BoardScript>();
                 if(!targetBoard.getisOnEnemy())
                 {
                     Vector2 newpos = targetBoard.getpos();
                     float newdis = Vector2.Distance(newpos, pos);
-                    if (newdis <= tempdis)
+                    if (newdis < tempdis)
                     {
                         tempdis = newdis;
                         temp = newpos;
@@ -97,37 +106,47 @@ public class ObjScript : MonoBehaviour
                 }
             }
         }
+        print(temp.ToString());
         Vector3 dir = new Vector3(temp.x, transform.position.y, temp.y) - transform.position;
-        transform.Translate(dir.normalized * MoveSpeed * Time.deltaTime, Space.Self);
-        print(dir.normalized * MoveSpeed * Time.deltaTime);
+        transform.Translate(dir.normalized * MoveSpeed * Time.fixedDeltaTime, Space.Self);
     }
 
-    void Damaged(float damage)
+    protected void Damaged(float damage)
     {
-        print("ATTACK");
+        HP -= (int)(damage - Defense);
     }
 
-    void Attack(Vector2 target)
+    protected abstract void Spell();
+
+    protected void Attack(Vector2 target)
     {
         GameObject targetObject = Manager.GetComponent<CreateBoard>().getBoards(target.x, target.y);
-        if (isOnCenter()&& Vector2.Distance(pos,target) <= (float)AtkRange && targetObject.GetComponent<BoardScript>().getisOnEnemy())
+        if (isOnCenter()&& Vector2.Distance(pos,target) <= (float)AtkRange && GetEnemy(targetObject))
         {
+            isMove = false;
             int damage = Mathf.RoundToInt(AtkDamage);
-            if (targetObject.GetComponent<BoardScript>().getUnit().tag == "Enemy")
+            int rand = Random.Range(0, 100);
+            if(rand < CriticalRate)
+            {
+                damage = Mathf.RoundToInt(AtkDamage * CriticalMultiplication/100);
+            }
+            if (targetObject.GetComponent<BoardScript>().getUnit().tag == GetEnemyStr())
             {
                 targetObject.GetComponent<BoardScript>().getUnit().GetComponent<ObjScript>().Damaged(damage);
-                print("III");
             }
             TimeForAtk = 0f;
         }
+        else
+        {
+            isMove = true;
+        }
     }
 
-    bool isOnCenter()
+    protected  bool isOnCenter()
     {
         Vector2 realPos = new Vector2(transform.position.x, transform.position.z);
         if(Vector2.Distance(realPos, pos) <= 0.2)
         {
-            transform.position = new Vector3(pos.x, transform.position.y, pos.y);
             return true;
         }
         else
@@ -135,8 +154,8 @@ public class ObjScript : MonoBehaviour
             return false;
         }
     }
-        
-    bool isAtkFunc(Vector2 target)//사거리 안에 적이 있는지 판단
+
+    protected bool isAtkFunc(Vector2 target)//사거리 안에 적이 있는지 판단
     {
         int dis = Mathf.RoundToInt(Vector2.Distance(target, pos));
         if (dis <= AtkRange)
@@ -148,22 +167,37 @@ public class ObjScript : MonoBehaviour
             return false;
         }
     }
-    
-    void GainMana()
+
+    protected void GainMana()
     {
         Mana += Mathf.RoundToInt(ManaRegen);
     }
 
-    void GainHp()
+    protected void GainHp()
     {
         HP += Mathf.RoundToInt(HpRegen);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Plane")
         {
             pos = other.GetComponent<BoardScript>().getpos();
         }
+    }
+
+    protected virtual Vector2[] GetEnemy()
+    {
+        return Manager.GetComponent<CreateBoard>().getEnemy();
+    }
+
+    protected virtual string GetEnemyStr()
+    {
+        return "Enemy";
+    }
+
+    protected virtual bool GetEnemy(GameObject enemy)
+    {
+        return enemy.GetComponent<BoardScript>().getisOnEnemy();
     }
 }

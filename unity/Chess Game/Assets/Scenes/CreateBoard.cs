@@ -73,6 +73,22 @@ public class CreateBoard : MonoBehaviour
     {
         int xint = Mathf.RoundToInt(x);
         int yint = Mathf.RoundToInt(y);
+        if(xint < 0)
+        {
+            xint = 0;
+        }
+        else if(xint > 7)
+        {
+            xint = 7;
+        }
+        if(yint < 0)
+        {
+            yint = 0;
+        }
+        else if(yint > 7)
+        {
+            yint = 7;
+        }
         return boards[xint, yint];
     }
 
